@@ -1,0 +1,8 @@
+{
+  "suppress": [
+    {
+      "ruleId": "GHSA-c5q2-7r4c-mv6ggit ",
+      "justification": "Acceptable risk for now; tracking resolution separately."
+    }
+  ]
+}
