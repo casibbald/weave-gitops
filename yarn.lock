@@ -652,7 +652,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@babel/plugin-syntax-jsx@npm:^7.22.5, @babel/plugin-syntax-jsx@npm:^7.7.2":
+"@babel/plugin-syntax-jsx@npm:^7.22.5, @babel/plugin-syntax-jsx@npm:^7.25.9, @babel/plugin-syntax-jsx@npm:^7.7.2":
   version: 7.25.9
   resolution: "@babel/plugin-syntax-jsx@npm:7.25.9"
   dependencies:
@@ -737,6 +737,17 @@ __metadata:
   peerDependencies:
     "@babel/core": ^7.0.0-0
   checksum: 10c0/14bf6e65d5bc1231ffa9def5f0ef30b19b51c218fcecaa78cd1bdf7939dfdf23f90336080b7f5196916368e399934ce5d581492d8292b46a2fb569d8b2da106f
+  languageName: node
+  linkType: hard
+
+"@babel/plugin-syntax-typescript@npm:^7.25.9":
+  version: 7.25.9
+  resolution: "@babel/plugin-syntax-typescript@npm:7.25.9"
+  dependencies:
+    "@babel/helper-plugin-utils": "npm:^7.25.9"
+  peerDependencies:
+    "@babel/core": ^7.0.0-0
+  checksum: 10c0/5192ebe11bd46aea68b7a60fd9555465c59af7e279e71126788e59121b86e00b505816685ab4782abe159232b0f73854e804b54449820b0d950b397ee158caa2
   languageName: node
   linkType: hard
 
@@ -1303,6 +1314,21 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@babel/plugin-transform-typescript@npm:^7.25.9":
+  version: 7.26.3
+  resolution: "@babel/plugin-transform-typescript@npm:7.26.3"
+  dependencies:
+    "@babel/helper-annotate-as-pure": "npm:^7.25.9"
+    "@babel/helper-create-class-features-plugin": "npm:^7.25.9"
+    "@babel/helper-plugin-utils": "npm:^7.25.9"
+    "@babel/helper-skip-transparent-expression-wrappers": "npm:^7.25.9"
+    "@babel/plugin-syntax-typescript": "npm:^7.25.9"
+  peerDependencies:
+    "@babel/core": ^7.0.0-0
+  checksum: 10c0/0a0509ec56666fab5b557d573254665956a377916fc1e7cee309c0711d11257338ba7ee678db03603a3985d2c6c0b210b788fb6b9616d8fc0595469e39089a8f
+  languageName: node
+  linkType: hard
+
 "@babel/plugin-transform-unicode-escapes@npm:^7.25.9":
   version: 7.25.9
   resolution: "@babel/plugin-transform-unicode-escapes@npm:7.25.9"
@@ -1439,6 +1465,21 @@ __metadata:
   peerDependencies:
     "@babel/core": ^7.0.0-0 || ^8.0.0-0 <8.0.0
   checksum: 10c0/9d02f70d7052446c5f3a4fb39e6b632695fb6801e46d31d7f7c5001f7c18d31d1ea8369212331ca7ad4e7877b73231f470b0d559162624128f1b80fe591409e6
+  languageName: node
+  linkType: hard
+
+"@babel/preset-typescript@npm:^7.26.0":
+  version: 7.26.0
+  resolution: "@babel/preset-typescript@npm:7.26.0"
+  dependencies:
+    "@babel/helper-plugin-utils": "npm:^7.25.9"
+    "@babel/helper-validator-option": "npm:^7.25.9"
+    "@babel/plugin-syntax-jsx": "npm:^7.25.9"
+    "@babel/plugin-transform-modules-commonjs": "npm:^7.25.9"
+    "@babel/plugin-transform-typescript": "npm:^7.25.9"
+  peerDependencies:
+    "@babel/core": ^7.0.0-0
+  checksum: 10c0/20d86bc45d2bbfde2f84fc7d7b38746fa6481d4bde6643039ad4b1ff0b804c6d210ee43e6830effd8571f2ff43fa7ffd27369f42f2b3a2518bb92dc86c780c61
   languageName: node
   linkType: hard
 
@@ -4247,6 +4288,7 @@ __metadata:
   resolution: "@weaveworks/weave-gitops@workspace:."
   dependencies:
     "@babel/core": "npm:^7.26.0"
+    "@babel/preset-typescript": "npm:^7.26.0"
     "@emotion/react": "npm:^11.14.0"
     "@emotion/styled": "npm:^11.14.0"
     "@mui/icons-material": "npm:^6.3.1"
