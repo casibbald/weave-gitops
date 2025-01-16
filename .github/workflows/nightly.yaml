@@ -69,13 +69,14 @@ jobs:
         sudo mv ./kubectl /usr/local/bin/kubectl
         kubectl version --client
 
-    - name: Install kind
-      run: |
-        curl -Lo ./kind https://kind.sigs.k8s.io/dl/v0.20.0/kind-linux-amd64
-        chmod +x ./kind
-        sudo mv ./kind /usr/local/bin/kind
-        which kind
-        kind version
+    - name: Kubernetes KinD Cluster
+      id: kind
+      uses: helm/kind-action@v1
+      with:
+        registry: true
+        registry_name: my-registry
+        registry_port: 5001
+        registry_enable_delete: true
 
     - name: Install playwright
       run: |
@@ -92,22 +93,19 @@ jobs:
         # exit-zero treats all errors as warnings. The GitHub editor is 127 chars wide
         flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
 
-    - name: Setup management cluster
-      run: |
-        ./utils/scripts/mgmt-cluster-setup.sh ${{ env.MANAGEMENT_CLUSTER_TYPE }} $(pwd) ${{ env.CLUSTER_NAME }}
 
     - name: Extract branch name
       run: |
         echo "branch_name=${GITHUB_HEAD_REF:-${GITHUB_REF#refs/heads/}}" >> $GITHUB_OUTPUT
       id: extract_branch
 
-    - name: Setup wego enterprise
+    - name: Setup wego community
       run: |
         kubectl create namespace flux-system
         flux install
         kubectl create secret generic git-provider-credentials -n flux-system --from-literal=username="weave-gitops-bot" --from-literal=password="${WEAVEWORKS_BOT_TOKEN}"
         sed -i 's/BRANCH_NAME/${{ steps.extract_branch.outputs.branch_name }}/' ./utils/scripts/resources/flux-system-gitrepo.yaml
-        ./utils/scripts/wego-enterprise.sh setup ./utils/scripts
+#        ./utils/scripts/wego-enterprise.sh setup ./utils/scripts
 
     - name: Install violating-app
       run: |
@@ -122,9 +120,6 @@ jobs:
         flux reconcile kustomization violating-podinfo -n default --with-source || true
         kubectl get pods -A
 
-    - name: Install gitopsset-configmaps
-      run: |
-        kubectl apply -f  ./utils/data/gitops-sets-kustomization.yaml
 
     - name: run tests
       if: success()
