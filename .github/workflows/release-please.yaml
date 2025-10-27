@@ -1,0 +1,35 @@
+name: release-please
+
+on:
+  push:
+    branches:
+      - main
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  release-please:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: google-github-actions/release-please-action@v4
+        id: release
+        with:
+          token: ${{ secrets.WEAVE_GITOPS_BOT_ACCESS_TOKEN || secrets.GITHUB_TOKEN }}
+          config-file: .github/release-please-config.json
+      
+      # This step will output the URL of the release PR if one was created
+      - run: |
+          if [ "${{ steps.release.outputs.release_created }}" == "true" ]; then
+            echo "Release PR created at: ${{ steps.release.outputs.pr_created }}"
+            echo "Release PR number: ${{ steps.release.outputs.pr_number }}"
+          fi
+          if [ "${{ steps.release.outputs.release_pr }}" != "" ]; then
+            echo "Existing release PR: ${{ steps.release.outputs.release_pr }}"
+          fi
+      
+      # Optional: Comment on the release PR with instructions
+      - if: steps.release.outputs.release_created == 'true' || steps.release.outputs.release_pr != ''
+        run: |
+          echo "Release PR is ready for review. Once approved and merged, the release workflow will automatically publish all artifacts."
