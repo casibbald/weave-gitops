@@ -2,7 +2,7 @@
 # then build (gitops, gitops-server). On tag: image, chart, goreleaser.
 #
 # Flow: vars (sets run_release_jobs: true when ref is v* tag OR workflow_dispatch with run_release_jobs=true) and conventional-commits run first.
-#   conventional-commits -> pr-title-lint (if PR), proto, ui-lint, ui-test -> go-* -> build.
+#   conventional-commits -> pr-title-lint (if PR) | proto, ui-lint, ui-test -> go-* -> build. (proto/ui need conventional-commits only so they run on push to main; pr-title-lint is PR-only.)
 #   Release jobs (build-push-gitops-server, build-and-push-chart, goreleaser) need [build, vars] and
 #   if: needs.vars.outputs.run_release_jobs == 'true'.
 #   workflow_dispatch input run_release_jobs is the sentinel when release.yaml (or manual) invokes CI via API.
@@ -62,6 +62,8 @@ jobs:
         with:
           fetch-depth: 0
       - uses: wagoid/commitlint-github-action@v5
+        with:
+          configFile: ./commitlint.config.mjs
 
   pr-title-lint:
     name: Validate PR title
@@ -104,7 +106,7 @@ jobs:
 
   ui-lint:
     name: UI lint
-    needs: [pr-title-lint]
+    needs: [conventional-commits]
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -118,7 +120,7 @@ jobs:
 
   ui-test:
     name: UI test
-    needs: [pr-title-lint]
+    needs: [conventional-commits]
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -131,7 +133,7 @@ jobs:
         
   proto:
     name: Proto (generate + git diff)
-    needs: [pr-title-lint]
+    needs: [conventional-commits]
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
