@@ -80,7 +80,7 @@ install: bin ## Install binaries to GOPATH
 	cp bin/$(BINARY_NAME) ${GOPATH}/bin/
 
 cluster-dev: ## Start tilt to do development with wego-app running on the cluster
-	./tools/bin/tilt up
+	./tools/bin/tilt up --host 0.0.0.0
 
 clean-dev-cluster:
 	kind delete cluster --name kind && docker rm -f kind-registry
